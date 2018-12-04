@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use App\Entity\Posts;
+
 /**
  * @Route("/posts")
  */
@@ -16,7 +18,12 @@ class PostsController extends AbstractController
      */
     public function list()
     {
-        return $this->render('posts/list.html.twig');
+        $repository = $this->getDoctrine()->getRepository(Posts::class);
+        $post = $repository->findAll();
+
+        return $this->render('posts/list.html.twig', array(
+            "posts" => $post
+        ));
     }
 
     /**
