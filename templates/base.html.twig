@@ -2,9 +2,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Social Educ Admin | Social Educ{% endblock %}</title>
         {% block stylesheets %}
            {{ encore_entry_link_tags('app') }}
+           <style>
+            body a{
+                color: white;
+            }
+           </style>
         {% endblock %}
     </head>
     <body>
@@ -19,7 +24,7 @@
                 </li>
             {% endif %}
             <li class="nav-item">
-                <a href="http://localhost/Address-Book1/public/" class="nav-link">Home</a>
+                <a  href="http://localhost/Address-Book1/public/" class="nav-link">Home</a>
             </li>
             <li class="nav-item">
                 <a href="/article/new" class="nav-link">...</a>

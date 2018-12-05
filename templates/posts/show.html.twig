@@ -1,5 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Hello from show with id: {{id}}</h1>
+<div class="container">
+    <div class="row">
+        <div style="width: 80%;">
+            <h1>{{post_detail.title}}</h1>
+            <label>{{post_detail.date|date('M-d')}}, {{post_detail.date|date('Y')}} by {{post_detail.author}}</label> {#{{post_detail.date|date('H:i:s')}}#}
+            <br>
+            <p>Picture: {{post_detail.picture}}</p>
+        </div>
+        <div>
+            <a class="btn bg-info" href="/Social-Educ-Admin/public/posts"><i class="fas fa-undo"></i></a>
+            <a class="btn bg-success" href="/Social-Educ-Admin/public/posts/add"><i class="fas fa-plus"></i></a>
+            <a class="btn bg-primary" href="edit"><i class="far fa-edit"></i></a>
+            <a class="btn bg-danger" href="delete"><i class="far fa-trash-alt"></i></a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <p style="width: 49%;">Body: {{post_detail.body}}</p>
+        <p>Media: {{post_detail.media}}</p>
+    </div>
+    <div class="row">
+        <label>nomber of likes: {{post_detail.numberOfLikes}}, nomber of comments: {{post_detail.numberOfComments}}</label>
+    </div>
+</div>
 {% endblock %}
