@@ -36,13 +36,6 @@ class Posts
     private $body;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $date = 'CURRENT_TIMESTAMP';
-
-    /**
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=false)
@@ -102,18 +95,6 @@ class Posts
     public function setBody(string $body): self
     {
         $this->body = $body;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
 
         return $this;
     }

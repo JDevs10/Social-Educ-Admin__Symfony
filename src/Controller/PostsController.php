@@ -8,6 +8,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Posts;
 
@@ -48,28 +50,73 @@ class PostsController extends AbstractController
     public function edit($id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Posts::class);
-        $post_edit = $repository->find($id);
-
-        $post = new Posts();
-        $post->setTask('Write a blog post');
-        $post->setDueDate(new \DateTime('tomorrow'));
+        $post = $repository->find($id);
 
         $form = $this->createFormBuilder($post)
-            ->add('task', TextType::class)
-            ->add('dueDate', DateType::class)
-            ->add('save', SubmitType::class, array('label' => 'Create Task'))
+            ->add('Title', TextType::class)
+            ->add('Body', TextareaType::class)
+            ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
+        
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('post_list');
+        }
 
         return $this->render('posts/edit.html.twig', array(
-            "id"    => $id
+            "id"    => $id,
+            'form' => $form->createView()
         ));
     }
 
     /**
      * @Route("/new", name="new_post")
      */
-    public function new()
+    public function new(Request $request)
     {
-        return $this->render('posts/new.html.twig');
+
+        $post = new Posts();
+
+        $form = $this->createFormBuilder($post)
+            ->add('Title', TextType::class)
+            ->add('Body', TextareaType::class)
+            ->add('Author', TextType::class)
+            ->add('Picture', TextType::class)
+            ->add('Media', TextType::class)
+            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($post);
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('post_list');
+        }
+
+        return $this->render('posts/new.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /**
+     * @Route("/{id}/delete", name="post_delete") 
+     */
+    public function delete($id){
+        $repository = $this->getDoctrine()->getRepository(Posts::class);
+        $post = $repository->find($id);
+
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager->remove($post);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('post_list');
     }
 }
