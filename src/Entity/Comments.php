@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+//indexes={@ORM\Index(name="ForeignKey_Comments-idPost_Posts-id", columns={"idPost"})}
 /**
  * Comments
  *
- * @ORM\Table(name="comments", indexes={@ORM\Index(name="ForeignKey_Comments-idPost_Posts-id", columns={"idPost"})})
+ * @ORM\Table(name="comments")
  * @ORM\Entity
  */
 class Comments
@@ -112,10 +112,16 @@ class Comments
         return $this;
     }
 
-    public function getIdpost(): ?Posts
+    public function getIdpost($id): ?Posts
     {
+        $this->idpost = $id;
         return $this->idpost;
     }
+
+    // public function getIdpost(): ?Posts
+    // {
+    //     return $this->idpost;
+    // }
 
     public function setIdpost(?Posts $idpost): self
     {

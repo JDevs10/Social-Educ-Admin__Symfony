@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+//, indexes={@ORM\Index(name="ForeignKey_IdStudent_experience", columns={"IdStudent"})}
 /**
  * Experience
  *
- * @ORM\Table(name="experience", indexes={@ORM\Index(name="ForeignKey_IdStudent_experience", columns={"IdStudent"})})
+ * @ORM\Table(name="experience")
  * @ORM\Entity
  */
 class Experience

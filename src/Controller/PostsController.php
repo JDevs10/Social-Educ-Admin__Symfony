@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use App\Entity\Posts;
+use App\Entity\Comments;
 
 /**
  * @Route("/posts")
@@ -39,8 +40,14 @@ class PostsController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Posts::class);
         $post_detail = $repository->find($id);
 
+        $stmt = $this->getDoctrine()->getManager()->getConnection()
+        ->prepare("SELECT * FROM comments WHERE idPost = ".$id);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+
         return $this->render('posts/show.html.twig', array(
-            "post_detail"    => $post_detail
+            "post_detail"    => $post_detail,
+            "comments" => $results
         ));
     }
 
