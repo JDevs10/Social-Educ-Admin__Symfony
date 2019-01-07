@@ -86,7 +86,6 @@ class PostsController extends AbstractController
      */
     public function new(Request $request)
     {
-
         $post = new Posts();
 
         $form = $this->createFormBuilder($post)

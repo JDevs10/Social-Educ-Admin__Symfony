@@ -42,12 +42,12 @@ class Comments
      */
     private $comment;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $date = 'CURRENT_TIMESTAMP';
+    // /**
+    //  * @var \DateTime
+    //  *
+    //  * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
+    //  */
+    // private $date = 'CURRENT_TIMESTAMP';
 
     /**
      * @var \Posts
@@ -105,12 +105,12 @@ class Comments
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
+    // public function setDate(\DateTimeInterface $date): self
+    // {
+    //     $this->date = $date;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getIdpost($id): ?Posts
     {

@@ -11,7 +11,7 @@
         </div>
         <div>
             <a class="btn bg-info" href="/Social-Educ-Admin/public/posts"><i class="fas fa-undo"></i></a>
-            <a class="btn bg-success" href="/Social-Educ-Admin/public/posts/add"><i class="fas fa-plus"></i></a>
+            <a class="btn bg-success" href="/Social-Educ-Admin/public/posts/new"><i class="fas fa-plus"></i></a>
             <a class="btn bg-primary" href="edit"><i class="far fa-edit"></i></a>
             <a class="btn bg-danger" href="delete"><i class="far fa-trash-alt"></i></a>
         </div>
@@ -36,7 +36,7 @@
                 <th scope="col" style="width: 5%;">Likes</th>
                 {# <th scope="col" style="width: 55%;">Comments</th> #}
                 <th scope="col" style="width: 11%;">Date</th>
-                <th scope="col" style="width: 35%;">Action</th>
+                <th scope="col" style="width: 35%;">Action <a class="btn bg-primary" href="/Social-Educ-Admin/public/comments/addComment"><i class="fa fa-comment"></i></a></th>
                 </tr>
             </thead>
             {% for comment in comments %}
@@ -48,10 +48,10 @@
                 <td>{{comment.comment}}</td>
                 <td>{{comment.numberOfLikes}}</td>
                 <td>{{comment.date|date('Y-M-d')}} </label> {{comment.date|date('H:i:s')}}</td>
-                <td><a class="btn bg-info">Like</a>
-                    <a class="btn bg-info">Comment</a>
-                    <a class="btn bg-primary" href="{{comment.id}}/edit"><i class="far fa-edit"></i></a>
-                    <a class="btn bg-danger" href="{{comment.id}}/delete"><i class="far fa-trash-alt"></i></a></td>
+                <td><a class="btn bg-success" href="###"><i class="fa fa-thumbs-up"></i></a>
+                    <a class="btn bg-secondary " href="###"><i class="fa fa-comments"></i></a>
+                    <a class="btn bg-primary" href="/Social-Educ-Admin/public/comments/{{comment.id}}/edit"><i class="far fa-edit"></i></a>
+                    <a class="btn bg-danger" href="/Social-Educ-Admin/public/comments/{{comment.id}}/delete"><i class="far fa-trash-alt"></i></a></td>
                 </tr>
                 <tr>
             </tbody>
