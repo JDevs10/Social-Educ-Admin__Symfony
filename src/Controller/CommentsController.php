@@ -58,8 +58,6 @@ class CommentsController extends AbstractController
         $comment = $repository->find($id);
 
         $form = $this->createFormBuilder($comment)
-            ->add("username", TextType::class)
-            ->add("userpicture", TextType::class)
             ->add('Comment', TextareaType::class)
             ->add('Save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
