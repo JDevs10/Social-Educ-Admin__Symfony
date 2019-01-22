@@ -123,6 +123,6 @@ class PostsController extends AbstractController
         $entityManager->remove($post);
         $entityManager->flush();
 
-        return $this->redirectToRoute('post_list');
+        
     }
 }

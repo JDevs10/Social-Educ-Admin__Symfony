@@ -20,14 +20,14 @@ use App\Entity\Comments;
 class CommentsController extends AbstractController
 {
     /**
-     * @Route("/addComment", name="add_comment")
+     * @Route("/post/{id}/addComment", name="add_comment")
      */
-    public function index(Request $request)
+    public function index($id, Request $request)
     {
         $comment = new Comments();
 
         $form = $this->createFormBuilder($comment)
-            // ->add("idPost", Comments::setIdpost($id))
+            // ->add("idPost", setData($id))
             ->add("username", TextType::class)
             ->add("userpicture", TextType::class)
             ->add('Comment', TextareaType::class)
@@ -45,7 +45,8 @@ class CommentsController extends AbstractController
         }
 
         return $this->render('comments/add.html.twig', array(
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'id' => $id
         ));
     }
 

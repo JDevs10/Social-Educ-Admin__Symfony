@@ -36,7 +36,7 @@
                 <th scope="col" style="width: 5%;">Likes</th>
                 {# <th scope="col" style="width: 55%;">Comments</th> #}
                 <th scope="col" style="width: 11%;">Date</th>
-                <th scope="col" style="width: 15%;">Action <a class="btn bg-primary" href="/Social-Educ-Admin/public/comments/addComment"><i class="fa fa-comment"></i></a></th>
+                <th scope="col" style="width: 15%;">Action <a class="btn bg-primary" href="/Social-Educ-Admin/public/comments/post/{{post_detail.id}}/addComment"><i class="fa fa-comment"></i></a></th>
                 </tr>
             </thead>
             {% for comment in comments %}
