@@ -42,22 +42,18 @@ class Comments
      */
     private $comment;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Posts", inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idPost;
+
     // /**
     //  * @var \DateTime
     //  *
     //  * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
     //  */
     // private $date = 'CURRENT_TIMESTAMP';
-
-    /**
-     * @var \Posts
-     *
-     * @ORM\ManyToOne(targetEntity="Posts")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idPost", referencedColumnName="id")
-     * })
-     */
-    private $idpost;
 
     public function getId(): ?int
     {
@@ -100,9 +96,21 @@ class Comments
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    /*  public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
+    }*/
+
+    public function getIdPost(): ?Posts
+    {
+        return $this->idPost;
+    }
+
+    public function setIdPost(?Posts $idPost): self
+    {
+        $this->idPost = $idPost;
+
+        return $this;
     }
 
     // public function setDate(\DateTimeInterface $date): self
@@ -111,24 +119,4 @@ class Comments
 
     //     return $this;
     // }
-
-    // public function getIdpost($id): ?Posts
-    // {
-    //     $this->idpost = $id;
-    //     return $this->idpost;
-    // }
-
-    public function getIdpost(): ?Posts
-    {
-        return $this->idpost;
-    }
-
-    public function setIdpost(?Posts $idpost): self
-    {
-        $this->idpost = $idpost;
-
-        return $this;
-    }
-
-
 }
