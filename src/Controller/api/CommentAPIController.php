@@ -168,7 +168,6 @@ class CommentAPIController extends AbstractController{
         return new JsonResponse($table);
     }
 
-
     //================================ DONE =============================================
     /**
      * @Route("/{idP}/comment/delete/{idC}", name="delete_comment")
@@ -192,6 +191,49 @@ class CommentAPIController extends AbstractController{
 
         // get the data of the comment
         foreach($getRestComments as $comment){
+            $table[] = [
+                "id"    =>  $comment->getId(),
+                "username"  =>  $comment->getUsername(),
+                "userPicture"   =>  $comment->getUserpicture(),
+                "comment"  =>  $comment->getComment(),
+                "id_post"    =>  $post->getId()
+            ];
+        }
+
+        // send the data in json format
+        return new JsonResponse($table);
+    }
+
+    //================================ DONE =============================================
+    /**
+     * @Route("/{idP}/comment/delete/{idC}", name="like_comment")
+     */
+    public function addLikeComment($idP, $idC){
+        $repository = $this->getDoctrine()->getRepository(Posts::class);
+        $getComment = $repository->find($idC);
+
+        $getCommentLike = $getComment->getNumberoflikes();
+        if($getComment->getNumberoflikes() != null){
+            $getComment->setNumberoflikes($getCommentLike + 1);    
+        }else{
+            $getComment->setNumberoflikes(1);
+        }
+
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager->persist($getComment);
+        $entityManager->flush();
+
+        $repository = $this->getDoctrine()->getRepository(Posts::class);
+        $post = $repository->find($idP);
+
+        $repository = $this->getDoctrine()->getRepository(Comments::class);
+        $getComments = $repository->findBy(
+            ["idPost" => $post->getId()],
+            ["id" => "ASC"]
+        );
+
+        // get the data of all the comments
+        foreach($getComments as $getComment){
             $table[] = [
                 "id"    =>  $comment->getId(),
                 "username"  =>  $comment->getUsername(),

@@ -190,7 +190,7 @@ class PostAPIController extends AbstractController{
     /**
      * @Route("/likePost/{id}")
      */
-    public function addLike($id){
+    public function addLikePost($id){
         $repository = $this->getDoctrine()->getRepository(Posts::class);
         $getPost = $repository->find($id);
 
