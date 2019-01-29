@@ -15,6 +15,7 @@ use App\Entity\Posts;
 */
 class PostAPIController extends AbstractController{
 
+    //================================ DONE =============================================
     /**
      * @Route("/getPosts", name="get_posts")
      */
@@ -41,6 +42,7 @@ class PostAPIController extends AbstractController{
         return new JsonResponse($data);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/addPost")
      */
@@ -60,6 +62,7 @@ class PostAPIController extends AbstractController{
         $entityManager->flush();
         
         $data = [
+            "id"    =>  $addPost->getId(),
             "title" =>  $addPost->getTitle(),
             "body" =>  $addPost->getBody(),
             "author" =>  $addPost->getAuthor(),
@@ -72,6 +75,7 @@ class PostAPIController extends AbstractController{
         return new JsonResponse($data);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/getPost/{id}")
      */
@@ -94,6 +98,7 @@ class PostAPIController extends AbstractController{
         return new JsonResponse($data);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/modifyPost/{id}")
      */
@@ -101,19 +106,30 @@ class PostAPIController extends AbstractController{
 
         // get user input
         $modifyPost = new Posts();
-        
-        if($request->get("title") != null){$modifyPost->setTitle($request->get("title"));}
-        if($request->get("body") != null){$modifyPost->setBody($request->get("body"));}
-        if($request->get("media") != null){$modifyPost->setMedia($request->get("media"));}
 
         // get the post
         $repository = $this->getDoctrine()->getRepository(Posts::class);
         $post = $repository->find($id);
 
-        // change the post data
-        $post->setTitle($modifyPost->getTitle());
-        $post->setBody($modifyPost->getBody());
-        $post->setMedia($modifyPost->getMedia());
+        //check the user input
+        if($request->get("title") != null){
+            $modifyPost->setTitle($request->get("title"));
+
+            // change the post data
+            $post->setTitle($modifyPost->getTitle());
+        }
+        if($request->get("body") != null){
+            $modifyPost->setBody($request->get("body"));
+
+            // change the post data
+            $post->setBody($modifyPost->getBody());
+        }
+        if($request->get("media") != null){
+            $modifyPost->setMedia($request->get("media"));
+
+            // change the post data
+            $post->setMedia($modifyPost->getMedia());
+        }
 
         // push the data to the db (aka update the post)
         $entityManager = $this->getDoctrine()->getManager();
@@ -136,6 +152,7 @@ class PostAPIController extends AbstractController{
         return new JsonResponse($data);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/deletePost/{id}")
      */
@@ -169,6 +186,7 @@ class PostAPIController extends AbstractController{
         return new JsonResponse($data);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/likePost/{id}")
      */
@@ -202,6 +220,7 @@ class PostAPIController extends AbstractController{
         return new JsonResponse($data);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/nbLikePost/{id}")
      */

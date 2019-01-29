@@ -48,13 +48,6 @@ class Comments
      */
     private $idPost;
 
-    // /**
-    //  * @var \DateTime
-    //  *
-    //  * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-    //  */
-    // private $date = 'CURRENT_TIMESTAMP';
-
     public function getId(): ?int
     {
         return $this->id;
@@ -96,11 +89,6 @@ class Comments
         return $this;
     }
 
-    /*  public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }*/
-
     public function getIdPost(): ?Posts
     {
         return $this->idPost;
@@ -112,11 +100,4 @@ class Comments
 
         return $this;
     }
-
-    // public function setDate(\DateTimeInterface $date): self
-    // {
-    //     $this->date = $date;
-
-    //     return $this;
-    // }
 }

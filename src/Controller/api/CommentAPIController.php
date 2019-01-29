@@ -18,6 +18,7 @@ use App\Entity\Comments;
  */
 class CommentAPIController extends AbstractController{
 
+    //================================ DONE =============================================
     /**
      * @Route("/{id}/comment/getAllComments", name="get_all_comments_post")
      */
@@ -41,28 +42,33 @@ class CommentAPIController extends AbstractController{
         return new Response($jsonContent);
     }
 
+    //================================ DONE =============================================
     /**
      * @Route("/{id}/comment/addComment", name="add_comment")
      */
     public function addComment($id, Request $request){
         $repository_post = $this->getDoctrine()->getRepository(Posts::class);
-        $id_post_id = $repository_post->findById($id);
+        $post = $repository_post->findOneById($id);
+        
+        //set my comment entity
+        $Comment = new Comments();
+        $Comment->setUsername($request->get("userName"));
+        $Comment->setUserpicture($request->get("userPicture"));
+        $Comment->setComment($request->get("comment"));
 
-        $addComment = new Comments();
+        // pass my comment entity to the post
+        // so Posts entity addComment can set the id_post_id to my comment
+        $post->addComment($Comment);
 
-        $addComment->setUsername($request->get("userName"));
-        $addComment->setUserpicture($request->get("userPicture"));
-        $addComment->setComment($request->get("comment"));
-        $addComment->setIdpost($id_post_id);
-
+        // push the comment to my db
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($addComment);
+        $entityManager->persist($Comment);
         $entityManager->flush();
 
-
+        // show all my comments of this post
         $repository = $this->getDoctrine()->getRepository(Comments::class);
         $allComments = $repository->findBy(
-            ["idpost"   =>  (int) $id],
+            ["idPost"   =>  $post],
             ["id"   =>  "ASC"]
         );
 
@@ -73,8 +79,7 @@ class CommentAPIController extends AbstractController{
                 "username"  =>  $allComment->getUsername(),
                 "userPicture"   =>  $allComment->getUserpicture(),
                 "comment"  =>  $allComment->getComment(),
-                "date"   =>  $allComment->getDate(),
-                "idPost"    =>  $id
+                "id_post"    =>  $post->getId()
             ];
         }
 
