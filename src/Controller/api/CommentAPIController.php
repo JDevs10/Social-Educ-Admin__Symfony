@@ -65,13 +65,14 @@ class CommentAPIController extends AbstractController{
         $entityManager->persist($Comment);
         $entityManager->flush();
 
-        // show all my comments of this post
+        // get all the comment of this post orther by id "ASC"
         $repository = $this->getDoctrine()->getRepository(Comments::class);
         $allComments = $repository->findBy(
             ["idPost"   =>  $post],
             ["id"   =>  "ASC"]
         );
 
+        // show all my comments of this post
         $data = [];
         foreach($allComments as $allComment){
             $table = [
@@ -83,6 +84,37 @@ class CommentAPIController extends AbstractController{
             ];
         }
 
+        // send the data in json format
+        array_push($data, $table);
+        return new JsonResponse($data);
+    }
+
+    //================================ DONE =============================================
+    /**
+     * @Route("/{idC}/comment/getComment/{idP}", name="get_comment")
+     */
+    public function getComment($idC, $idP){
+        // get the actuel post
+        $repository = $this->getDoctrine()->getRepository(Posts::class);
+        $post = $repository->findOneById($idC);
+
+        // get the actuel comment
+        $repository = $this->getDoctrine()->getRepository(Comments::class);
+        $getComment = $repository->findById($idP);
+
+        // get the data of the comment
+        $data = [];
+        foreach($getComment as $comment){
+            $table = [
+                "id"    =>  $comment->getId(),
+                "username"  =>  $comment->getUsername(),
+                "userPicture"   =>  $comment->getUserpicture(),
+                "comment"  =>  $comment->getComment(),
+                "id_post"    =>  $post->getId()
+            ];
+        }
+
+        // send the data in json format
         array_push($data, $table);
         return new JsonResponse($data);
     }

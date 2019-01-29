@@ -209,7 +209,6 @@ class PostAPIController extends AbstractController{
             "id"    =>  $getPost->getId(),
             "title"    =>  $getPost->getTitle(),
             "body"    =>  $getPost->getBody(),
-            // "date"    =>  $getPost->getId(),
             "author"    =>  $getPost->getAuthor(),
             "picture"    =>  $getPost->getPicture(),
             "media"    =>  $getPost->getMedia(),
