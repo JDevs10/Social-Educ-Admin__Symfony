@@ -75,7 +75,7 @@ class CommentAPIController extends AbstractController{
         // show all my comments of this post
         $data = [];
         foreach($allComments as $allComment){
-            $table = [
+            $table[] = [
                 "id"    =>  $allComment->getId(),
                 "username"  =>  $allComment->getUsername(),
                 "userPicture"   =>  $allComment->getUserpicture(),
@@ -91,21 +91,20 @@ class CommentAPIController extends AbstractController{
 
     //================================ DONE =============================================
     /**
-     * @Route("/{idC}/comment/getComment/{idP}", name="get_comment")
+     * @Route("/{idP}/comment/getComment/{idC}", name="get_comment")
      */
-    public function getComment($idC, $idP){
+    public function getComment($idP, $idC){
         // get the actuel post
         $repository = $this->getDoctrine()->getRepository(Posts::class);
-        $post = $repository->findOneById($idC);
+        $post = $repository->findOneById($idP);
 
         // get the actuel comment
         $repository = $this->getDoctrine()->getRepository(Comments::class);
-        $getComment = $repository->findById($idP);
+        $getComment = $repository->findById($idC);
 
         // get the data of the comment
-        $data = [];
         foreach($getComment as $comment){
-            $table = [
+            $table[] = [
                 "id"    =>  $comment->getId(),
                 "username"  =>  $comment->getUsername(),
                 "userPicture"   =>  $comment->getUserpicture(),
@@ -115,7 +114,94 @@ class CommentAPIController extends AbstractController{
         }
 
         // send the data in json format
-        array_push($data, $table);
-        return new JsonResponse($data);
+        return new JsonResponse($table);
+    }
+
+    //================================ DONE =============================================
+    /**
+     * @Route("/{idP}/comment/modifyComment/{idC}", name="modify_comment")
+     */
+    public function modifyComment($idP, $idC, Request $request){
+
+        $modifyComment = new Comments();    
+
+        // get the comment
+        $repository = $this->getDoctrine()->getRepository(Comments::class);
+        $Comment = $repository->find($idC);
+
+        //check the user input
+        if($request->get("comment") != null){
+            $modifyComment->setComment($request->get("comment"));
+
+            // change the comment data
+            $Comment->setComment($modifyComment->getComment());
+        }
+
+        // push the data to the db (aka update the comment)
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($Comment);
+        $entityManager->flush();
+
+        // get the actual post
+        $repository_P = $this->getDoctrine()->getRepository(Posts::class);
+        $post = $repository_P->find($idP);
+
+        // find all the comments of that post
+        $repository = $this->getDoctrine()->getRepository(Comments::class);
+        $getRestComments = $repository->findBy(
+            ["idPost" => $post->getId()],
+            ["id" => "ASC"]
+        );
+
+        // get the data of the comment
+        foreach($getRestComments as $comment){
+            $table[] = [
+                "id"    =>  $comment->getId(),
+                "username"  =>  $comment->getUsername(),
+                "userPicture"   =>  $comment->getUserpicture(),
+                "comment"  =>  $comment->getComment(),
+                "id_post"    =>  $post->getId()
+            ];
+        }
+
+        // send the data in json format
+        return new JsonResponse($table);
+    }
+
+
+    //================================ DONE =============================================
+    /**
+     * @Route("/{idP}/comment/delete/{idC}", name="delete_comment")
+     */
+    public function deleteComment($idP, $idC){
+        $repository = $this->getDoctrine()->getRepository(Comments::class);
+        $deleteComment = $repository->find($idC);
+
+        $repository = $this->getDoctrine()->getRepository(Posts::class);
+        $post = $repository->find($idP);
+
+        $entityManager = $this->getDoctrine()->getEntityManager();
+        $entityManager->remove($deleteComment);
+        $entityManager->flush();
+
+        $repository = $this->getDoctrine()->getRepository(Comments::class);
+        $getRestComments = $repository->findBy(
+            ["idPost" => $post->getId()],
+            ["id" => "ASC"]
+        );
+
+        // get the data of the comment
+        foreach($getRestComments as $comment){
+            $table[] = [
+                "id"    =>  $comment->getId(),
+                "username"  =>  $comment->getUsername(),
+                "userPicture"   =>  $comment->getUserpicture(),
+                "comment"  =>  $comment->getComment(),
+                "id_post"    =>  $post->getId()
+            ];
+        }
+
+        // send the data in json format
+        return new JsonResponse($table);
     }
 }
