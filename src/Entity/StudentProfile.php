@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -32,6 +34,16 @@ class StudentProfile implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Posts", mappedBy="idStudent", orphanRemoval=true)
+     */
+    private $posts;
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -109,5 +121,36 @@ class StudentProfile implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection|Posts[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Posts $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setIdStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Posts $post): self
+    {
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            // set the owning side to null (unless already changed)
+            if ($post->getIdStudent() === $this) {
+                $post->setIdStudent(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -77,6 +77,13 @@ class Posts
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\StudentProfile", inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $idStudent;
+    
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -198,6 +205,18 @@ class Posts
                 $comment->setIdPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdStudent(): ?StudentProfile
+    {
+        return $this->idStudent;
+    }
+
+    public function setIdStudent(?StudentProfile $idStudent): self
+    {
+        $this->idStudent = $idStudent;
 
         return $this;
     }

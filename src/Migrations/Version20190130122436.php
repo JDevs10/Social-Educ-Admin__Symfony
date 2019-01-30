@@ -8,15 +8,15 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190123103439 extends AbstractMigration
+final class Version20190130122436 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE comments ADD CONSTRAINT FK_5F9E962A9514AA5C FOREIGN KEY (id_post_id) REFERENCES posts (id)');
-        $this->addSql('CREATE INDEX IDX_5F9E962A9514AA5C ON comments (id_post_id)');
+        $this->addSql('ALTER TABLE posts ADD id_student_id INT NOT NULL');
+        $this->addSql('CREATE INDEX IDX_885DBAFA6E1ECFCD ON posts (id_student_id)');
     }
 
     public function down(Schema $schema) : void
@@ -24,7 +24,7 @@ final class Version20190123103439 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE comments DROP FOREIGN KEY FK_5F9E962A9514AA5C');
-        $this->addSql('DROP INDEX IDX_5F9E962A9514AA5C ON comments');
+        $this->addSql('DROP INDEX IDX_885DBAFA6E1ECFCD ON posts');
+        $this->addSql('ALTER TABLE posts DROP id_student_id');
     }
 }
